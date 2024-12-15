@@ -51,9 +51,10 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
       - name: Run commands on server
         run: |
           ssh -i ~/.ssh/id_rsa root@${{ secrets.SSH_HOST }} 
           echo 'Connected successfully!'
-          uname -a"
+          uname -a
