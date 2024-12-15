@@ -25,14 +25,21 @@ jobs:
         with:
           go-version: '1.23'
           cache-dependency-path: go.sum
+      - name: Cache Docker layers
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-docker-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-docker-
       - name: Set up Docker Compose
         run: sudo apt-get update && sudo apt-get install -y docker-compose
       - name: Docker up for tests
         run: |
           cd ./cmd/microservices
-          docker-compose up -d --build postgres
-          docker-compose up -d --build migrate-service
-          docker-compose up -d --build filling-service
+          docker-compose build --progress=plain --cache-from=type=local,src=/tmp/.buildx-cache \
+          --cache-to=type=local,dest=/tmp/.buildx-cache
+          docker-compose up -d postgres migrate-service filling-service
 
       - name: Install dependencies
         run: go mod tidy
