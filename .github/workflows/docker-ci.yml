@@ -8,7 +8,7 @@ on:
 env:
   IMAGE_REGISTRY: "ghcr.io"
 jobs:
-  lint: 
+  lint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -19,25 +19,25 @@ jobs:
     needs: lint
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - name: Setup Go
-      uses: actions/setup-go@v5
-      with:
-        go-version: '1.23'
-        cache-dependency-path: go.sum
-    - name: Set up Docker Compose
-      run: sudo apt-get update && sudo apt-get install -y docker-compose
-    - name: Docker up for tests
-      run: |
-        cd ./cmd/microservices
-        docker-compose up -d --build postgres
-        docker-compose up -d --build migrate-service
-        docker-compose up -d --build filling-service
+      - uses: actions/checkout@v4
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23'
+          cache-dependency-path: go.sum
+      - name: Set up Docker Compose
+        run: sudo apt-get update && sudo apt-get install -y docker-compose
+      - name: Docker up for tests
+        run: |
+          cd ./cmd/microservices
+          docker-compose up -d --build postgres
+          docker-compose up -d --build migrate-service
+          docker-compose up -d --build filling-service
 
-    - name: Install dependencies
-      run: go mod tidy
-    - name: Tests
-      run: go test ./...
+      - name: Install dependencies
+        run: go mod tidy
+      - name: Tests
+        run: go test ./...
 
   deploy:
     needs: tests
