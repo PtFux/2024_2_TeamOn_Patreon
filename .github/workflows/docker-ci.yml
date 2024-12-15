@@ -54,4 +54,6 @@ jobs:
 
       - name: Run commands on server
         run: |
-          ssh -i ~/.ssh/id_rsa root@${{ secrets.SSH_HOST }} "echo 'Connected successfully!'; uname -a"
+          ssh -i ~/.ssh/id_rsa root@${{ secrets.SSH_HOST }} 
+          echo 'Connected successfully!'
+          uname -a"
