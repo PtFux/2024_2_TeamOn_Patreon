@@ -66,15 +66,11 @@ jobs:
           echo 'Connected successfully!'
           uname -a
 
-      - name: Git clone
-        run: | 
           pwd
           cd ./pushart/2024_2_TeamOn_Patreon
           git fetch origin
           git checkout load
           git pull origin load
 
-      - name: Set up docker-compose
-        run: |
           docker-compose down
           docker-compose up -d --build
