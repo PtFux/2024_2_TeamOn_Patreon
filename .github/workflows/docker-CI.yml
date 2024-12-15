@@ -58,3 +58,15 @@ jobs:
           ssh -i ~/.ssh/id_rsa root@${{ secrets.SSH_HOST }} 
           echo 'Connected successfully!'
           uname -a
+
+      - name: Git clone
+        run: | 
+          cd pushart/2024_2_TeamOn_Patreon
+          git fetch origin
+          git checkout load
+          git pull origin load
+
+      - name: Set up docker-compose
+        run: |
+          docker-compose down
+          docker-compose up -d --build
