@@ -62,15 +62,14 @@ jobs:
 
       - name: Run commands on server
         run: |
-          ssh -i ~/.ssh/id_rsa root@${{ secrets.SSH_HOST }} 
-          echo 'Connected successfully!'
-          uname -a
-
-          pwd
-          cd ./pushart/2024_2_TeamOn_Patreon
-          git fetch origin
-          git checkout load
-          git pull origin load
-
-          docker-compose down
-          docker-compose up -d --build
+          ssh -i ~/.ssh/id_rsa root@${{ secrets.SSH_HOST }} << EOF
+            echo 'Connected successfully!'
+            uname -a
+            pwd
+            cd ./pushart/2024_2_TeamOn_Patreon
+            git fetch origin
+            git checkout load
+            git pull origin load
+            docker-compose down
+            docker-compose up -d --build
+          EOF
