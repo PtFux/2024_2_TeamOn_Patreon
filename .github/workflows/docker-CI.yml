@@ -39,23 +39,17 @@ jobs:
     - name: Tests
       run: go test ./...
 
-
-#  deploy:
-#    needs: tests
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout code
-#        uses: actions/checkout@v4
-#      - name: Run command on remote server
-#        uses: D3rHase/ssh-command-action@v0.2.2
-#        with:
-#          host: ${{secrets.SSH_HOST}}
-#          user: ${{secrets.SSH_USER}}
-#          private_key: ${{secrets.SSH_PRIVATE_KEY}}
-#          command: |
-#            cd ${{ secrets.PROJECT_FOLDER }};
-#            git checkout load;
-#            git pull;
-#            docker-compose --file docker-compose.prod.yml down;
-#            docker-compose --file docker-compose.prod.yml up -d;
-#            docker system prune --all --force;
+  deploy:
+    needs: tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: root
+          password: ${{ secrets.PASSWORD }}
+          port: 22
+          script: whoami
